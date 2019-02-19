@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<!-- 전체 사용자 조회 -->
+  	<select id="getAllUser" resultType="userVo">
+    	SELECT * FROM USERS
+    	<!-- #userId# ==> #{userId} -->
+  	</select>
+  	
+	<!-- 특정 사용자 조회(userId) selectUser(String userId). query, dao(test), service(test) -->
+  	<select id="selectUser" resultType="userVo" parameterType="String">
+  		SELECT * FROM USERS 
+  		WHERE USERID = #{userId}
+  	</select>
+  	
+  	<!-- 사용자 페이징 조회 -->
+  	<!-- 특정 페이지 번호(page)에 해당하는 행들을 가져옴(행의 수는 pageSize). -->
+  	<select id="selectUserPagingList" resultType="userVo" parameterType="pageVo">
+		SELECT *
+		  FROM
+			(SELECT A.*, ROWNUM RN
+			  FROM
+				(SELECT USERS.*
+				FROM USERS
+				ORDER BY USERID) A) A
+		WHERE RN BETWEEN (#{page}-1)*#{pageSize}+1 AND #{page}*#{pageSize}
+  	</select>
+  	
+  	<!-- 전체 사용자 수 조회 -->
+  	<select id="getUserCnt" resultType="Integer">
+		SELECT COUNT (*)
+		  FROM USERS
+  	</select>
+  	
+  	<!-- 사용자 입력 --> <!-- ', ' -> '}, #{'로 replace -->
+  	<insert id="insertUser" parameterType="userVo">
+		INSERT INTO USERS (USERID, USERNM, ALIAS, ADDR1, ADDR2, ZIPCODE, PASS, REG_DT, FILENAME, REALFILENAME)
+		VALUES (#{userId}, #{userNm}, #{alias}, #{addr1}, #{addr2}, #{zipcode}, #{pass}, SYSDATE,
+		#{fileName}, #{realFileName})  		
+  	</insert>
+  	
+  	<!-- 사용자 삭제 -->
+  	<delete id="deleteUser" parameterType="String">
+		DELETE FROM USERS
+		WHERE USERID = #{userId}  	
+  	</delete>
+  	
+  	<!-- 사용자 정보 수정 -->
+  	<!-- #안의 대소문자는 상관없는데 NVL 함수 안의 jdbcType을 전부 대문자로 쓰면 안되네. -->
+  	<update id="updateUser" parameterType="userVo">
+  		UPDATE USERS
+  		SET
+		USERNM = #{userNm},
+		ALIAS = NVL(#{alias, jdbcType=VARCHAR}, alias),
+		ADDR1 = NVL(#{addr1, jdbcType=VARCHAR}, addr1),
+		ADDR2 = NVL(#{addr2, jdbcType=VARCHAR}, addr2),
+		ZIPCODE = NVL(#{zipcode, jdbcType=VARCHAR}, zipcode),
+		PASS = #{pass},
+		FILENAME = NVL(#{fileName, jdbcType=VARCHAR}, fileName),
+		REALFILENAME = NVL(#{realFileName, jdbcType=VARCHAR}, realFileName)
+		WHERE USERID = #{userId}
+		
+<!-- 		nvl -> null일때 특정 값을 입력. -->
+<!-- 		fileName = nvl(#{fileName, idbcType=VARCHAR}, fileName), -->
+<!-- 		realFileName = nvl(#{realFileName, idbcType=VARCHAR}, realFileName) -->
+		
+  	</update>
+  	
+  	<update id="updateUserPass" parameterType="userVo">
+		UPDATE USERS SET PASS = #{pass}
+		 WHERE USERID = #{userId}  		
+  	</update>
+  	
+  	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

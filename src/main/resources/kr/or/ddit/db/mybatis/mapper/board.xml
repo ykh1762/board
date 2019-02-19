@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+	<!-- 전체 사용자 조회 -->
+  	<select id="getAllBoard" resultType="boardVo">
+    	SELECT * FROM BOARD
+  	</select>
+  	
+  	<!-- 게시판 정보 수정 -->
+  	<update id="updateBoard" parameterType="boardVo">
+		UPDATE BOARD
+		SET
+		BOARD_NM = #{board_nm},
+		USE_FLAG = #{use_flag}
+		WHERE BOARD_NO = #{board_no}  	
+  	</update>
+  	
+  	<!-- board_nm으로 게시판 정보 조회. -->
+  	<select id="selectBoard" parameterType="String" resultType="boardVo">
+		SELECT *
+		  FROM BOARD
+		 WHERE BOARD_NM = #{board_nm}  	
+  	</select>
+  	
+
+  	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

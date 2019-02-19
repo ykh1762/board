@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="post">
+	<!-- 전체 게시글 조회 -->
+	<!-- 전체 조회하는 쿼리에 ORDER BY TO_NUMBER(POST_NO) 추가해줌. -> 정렬 제대로 됨. -->
+  	<select id="getAllPost" resultType="postVo">
+    	SELECT * FROM POST
+    	ORDER BY TO_NUMBER(POST_NO)	
+  	</select>
+  	
+  	<!-- level 구하기 -->
+	<select id="getLevel" resultType="postVo">
+		SELECT POST_NO, (LPAD(' ', 5*(LEVEL-1)) || TITLE) AS EDITTITLE, (LEVEL) AS POST_LEVEL
+		  FROM POST
+		START WITH PARENT_POST_NO IS NULL
+		CONNECT BY PRIOR POST_NO = PARENT_POST_NO
+		ORDER BY TO_NUMBER(POST_NO)	
+	</select>
+	
+	<!-- 게시글에 level 설정 -->
+	<update id="updateLevel" parameterType="postVo">
+		UPDATE POST
+		SET
+		POST_LEVEL = #{post_level}
+		WHERE POST_NO = #{post_no}
+	</update>
+	
+	<!-- 게시글에 gn 설정 -->
+	<update id="updateGn" parameterType="postVo">
+		UPDATE POST
+		SET
+		GN = #{gn}
+		WHERE POST_NO = #{post_no}
+	</update>
+	
+	<!-- hell query -->
+	<select id="getEditList" resultType="postVo" parameterType="String">
+		SELECT POST_NO, GN, (LPAD('→ ', 2*(LEVEL-1), '-') || TITLE) AS TITLE, (LEVEL) AS POST_LEVEL,
+				USERID, REG_DT
+		  FROM POST
+		 WHERE BOARD_NO = #{board_no}
+		START WITH PARENT_POST_NO IS NULL
+		CONNECT BY PRIOR POST_NO = PARENT_POST_NO
+		ORDER SIBLINGS BY GN DESC, TO_NUMBER(POST_NO) ASC	
+	</select>
+	
+	<!-- 전체 게시글 수 조회. -->
+	<select id="getPostCnt" resultType="Integer">
+		SELECT COUNT(*)
+		  FROM POST
+	</select>
+	
+	<!-- 게시글 등록 -->
+	<!-- nullable column엔 컬럼 타입을 지정해줘야함? jdbcType=VARCHAR -->
+	<insert id="insertPost" parameterType="postVo">
+		INSERT INTO POST (POST_NO, PARENT_POST_NO, USERID, TITLE, CONTENT, REG_DT, DELETE_FLAG, BOARD_NO, GN, POST_LEVEL)
+		VALUES (#{post_no}, #{parent_post_no, jdbcType=VARCHAR}, #{userid}, #{title}, #{content, jdbcType=VARCHAR}, sysdate, #{delete_flag, jdbcType=VARCHAR}, #{board_no, jdbcType=VARCHAR}, #{gn, jdbcType=VARCHAR}, #{post_level, jdbcType=VARCHAR})	
+	</insert>
+	
+	<!-- 특정 게시글 조회 -->
+	<select id="selectPost" parameterType="String" resultType="postVo">
+		SELECT *
+		  FROM POST
+		 WHERE POST_NO = #{post_no}	
+	</select>
+	
+  	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
