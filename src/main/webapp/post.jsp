@@ -44,52 +44,19 @@
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	
-	<script src="/SE2/js/HuskyEZCreator.js"></script>
 	<script type="text/javascript">
-	var oEditors = []; // 개발되어 있는 소스에 맞추느라, 전역변수로 사용하였지만, 지역변수로 사용해도 전혀 무관 함.
 	
 	$(document).ready(function() {
-		// Editor Setting
-		nhn.husky.EZCreator.createInIFrame({
-			oAppRef : oEditors, // 전역변수 명과 동일해야 함.
-			elPlaceHolder : "smarteditor", // 에디터가 그려질 textarea ID 값과 동일 해야 함.
-			sSkinURI : "/SE2/SmartEditor2Skin.html", // Editor HTML
-			fCreator : "createSEditor2", // SE2BasicCreator.js 메소드명이니 변경 금지 X
-			htParams : {
-				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-				bUseToolbar : true,
-				// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-				bUseVerticalResizer : true,
-				// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-				bUseModeChanger : true, 
-			}
-		});
 	
 		// 전송버튼 클릭이벤트
 		$("#savebutton").click(function(){
 			if(confirm("게시글을 등록하시겠습니까?")) {
-				// id가 smarteditor인 textarea에 에디터에서 대입
-				oEditors.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
 	
-				// 이부분에 에디터 validation 검증
-				if(validation()) {
-					$("#frm").submit();
-				}
+				$("#frm").submit();
 			}
 		})
 	});
 	
-	// 필수값 Check
-	function validation(){
-		var contents = $.trim(oEditors[0].getContents());
-		if(contents === '<p>&nbsp;</p>' || contents === ''){ // 기본적으로 아무것도 입력하지 않아도 <p>&nbsp;</p> 값이 입력되어 있음. 
-			alert("내용을 입력하세요.");
-			oEditors.getById['smarteditor'].exec('FOCUS');
-			return false;
-		}
-	
-		return true;
-	}
 	
 	</script>	
 	
@@ -139,6 +106,7 @@
 							</div>
 							<div>
 								<label>내용 : </label>
+<%-- 								<textarea id="content" name="content" readonly>${content }</textarea> --%>
 								<label>${content }</label>
 							</div>
 							<input type="hidden" id="post_no" name="post_no">	
@@ -149,105 +117,21 @@
 						</div>
 					</div>
 				</div>
+				
+				<!-- 첨부파일 리스트 출력. -->
+				<!-- 먼저 글쓰기 했을때 첨부파일 수정. -->
+				<label style="black;">첨부파일 : ${fileList.size() } 개</label> <br>
+				<c:if test="${fileList.size() > 0 }">
+					<c:forEach var="i" begin="0" end="${fileList.size() - 1 }">
+						<label style="color: black; margin-left: 10px;"> - ${fileList.get(i).filename }</label> <br>
+						
+					</c:forEach>
+					
+				</c:if>
 			</div>
 		</div>
 		
-		<!-- 댓글 -->
-	    <section class="blog_area section-gap single-post-area" style="padding: 0px;">
-	        <div class="container box_1170">
-	            <div class="row">
-	                <div class="col-lg-8">
-	                    <div class="comments-area" style="padding-top: 0px;">
-	                        <h4>3개의 댓글이 있습니다.</h4>
-	                        <div class="comment-list">
-	                            <div class="single-comment justify-content-between d-flex">
-	                                <div class="user justify-content-between d-flex">
-	                                    <div class="thumb">
-	                                        <img src="img/blog/c1.jpg" alt="">
-	                                    </div>
-	                                    <div class="desc">
-	                                        <h5><a href="#">Emilly Blunt</a></h5>
-	                                        <p class="date">December 4, 2017 at 3:12 pm </p>
-	                                        <p class="comment">
-	                                            Never say goodbye till the end comes!
-	                                        </p>
-	                                    </div>
-	                                </div>
-	                                <div class="reply-btn">
-	                                    <a href="" class="btn-reply text-uppercase">reply</a>
-	                                </div>
-	                            </div>
-	                        </div>
-	                        <div class="comment-list">
-	                            <div class="single-comment justify-content-between d-flex">
-	                                <div class="user justify-content-between d-flex">
-	                                    <div class="thumb">
-	                                        <img src="img/blog/c4.jpg" alt="">
-	                                    </div>
-	                                    <div class="desc">
-	                                        <h5><a href="#">Maria Luna</a></h5>
-	                                        <p class="date">December 4, 2017 at 3:12 pm </p>
-	                                        <p class="comment">
-	                                            Never say goodbye till the end comes!
-	                                        </p>
-	                                    </div>
-	                                </div>
-	                                <div class="reply-btn">
-	                                    <a href="" class="btn-reply text-uppercase">reply</a>
-	                                </div>
-	                            </div>
-	                        </div>
-	                        <div class="comment-list">
-	                            <div class="single-comment justify-content-between d-flex">
-	                                <div class="user justify-content-between d-flex">
-	                                    <div class="thumb">
-	                                        <img src="img/blog/c5.jpg" alt="">
-	                                    </div>
-	                                    <div class="desc">
-	                                        <h5><a href="#">Ina Hayes</a></h5>
-	                                        <p class="date">December 4, 2017 at 3:12 pm </p>
-	                                        <p class="comment">
-	                                            Never say goodbye till the end comes!
-	                                        </p>
-	                                    </div>
-	                                </div>
-	                                <div class="reply-btn">
-	                                    <a href="" class="btn-reply text-uppercase">reply</a>
-	                                </div>
-	                            </div>
-	                            <!-- 댓글작성 -->
-			                    <div class="comment-form">
-			                        <form>
-			                            <div class="form-group form-inline">
-			                                <div class="form-group col-lg-6 col-md-6 name">
-			                                    <input type="text" class="form-control" id="name" placeholder="Enter Name" onfocus="this.placeholder = ''"
-			                                        onblur="this.placeholder = 'Enter Name'">
-			                                </div>
-			                                <div class="form-group col-lg-6 col-md-6 email">
-			                                    <input type="email" class="form-control" id="email" placeholder="Enter email address"
-			                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
-			                                </div>
-			                            </div>
-			                            <div class="form-group">
-			                                <input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="this.placeholder = ''"
-			                                    onblur="this.placeholder = 'Subject'">
-			                            </div>
-			                            <div class="form-group">
-			                                <textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege"
-			                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'" required=""></textarea>
-			                            </div>
-			                            <a href="#" class="primary-btn submit_btn text-uppercase">Send Message</a>
-			                        </form>
-			                    </div>
-	                        </div>
-	                    </div>		
-					</div>
-	            </div>
-	        </div>
-	    </section>		
 		
-		
-		<!-- 댓글 -->
 		
 		<a class="genric-btn primary radius" 
 				style="margin-left: 1075px; margin-top: -50px; margin-bottom: 40px; margin-right: 10px;" 
@@ -259,6 +143,67 @@
 				">답글 쓰기</a>
 		<input type="button" class="genric-btn primary radius" style="" id="btn_edit" value="수정">
 	</form>
+	
+		<!-- 댓글 -->
+	<form action="${pageContext.request.contextPath }/reply" id="replyFrm" method="post">
+		<input type="hidden" id="replyContent" name="replyContent">
+		<input type="hidden" id="replyPost_no" name="replyPost_no">
+		<input type="hidden" id="replyUserid" name="replyUserid">
+		
+		<input type="hidden" id="replyTitle" name="replyTitle">	
+		<input type="hidden" id="replyContent" name="replyContent">	
+		<input type="hidden" id="replyBoard_nm" name="replyBoard_nm">		
+		
+	    <section class="blog_area section-gap single-post-area" style="padding: 0px;">
+	        <div class="container box_1170">
+	            <div class="row">
+	                <div class="col-lg-8">
+	                    <div class="comments-area" style="padding-top: 0px;">
+	                        <h4>${replyList.size() } 개의 댓글이 있습니다.</h4>
+	                        <c:if test="${replyList.size() != 0 }">
+		                        <c:forEach var="i" begin="0" end="${replyList.size() - 1 }">
+			                        <div class="comment-list" >
+			                            <div class="single-comment justify-content-between d-flex">
+			                                <div class="user justify-content-between d-flex">
+			                                    <div class="thumb">
+			                                        <img src="img/blog/brown60.png" alt="">
+			                                    </div>
+			                                    <div class="desc">
+			                                        <h5><label>${replyList.get(i).userid }</label></h5>
+			                                        <p class="date">${replyList.get(i).reg_dt } </p>
+			                                        <p class="comment">
+			                                            ${replyList.get(i).content }
+			                                        </p>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>		                        
+		                        </c:forEach>	                        
+	                        </c:if>
+	                        
+	                        <div class="comment-list">
+
+	                            <!-- 댓글작성 -->
+			                    <div class="comment-form" style="padding: 0px;">
+	                            <h4>댓글 작성하기</h4>
+			                        <div>
+			                            <div class="form-group">
+			                                <textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege"
+			                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'" required=""
+			                                    id="message"></textarea>
+			                            </div>
+										<input type="button" class="genric-btn primary radius" 
+												id="btn_reply" value="확인">	
+			                        </div>
+			                    </div>
+	                        </div>
+	                    </div>		
+					</div>
+	            </div>
+	        </div>
+	    </section>	
+	</form>	
+		<!-- 댓글 -->	
 	
 	
 	
@@ -358,11 +303,29 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				$("#post_no").val("${post_no }");
 				$("#userid").val("${userid }");
 				$("#title").val("${title }");
-				$("#content").val("${content }");
+				
+				$("#content").val('${content }');
 				$("#board_nm").val("${board_nm }");
 				
 				$("#frm").submit();
 			});
+			
+			$("#btn_reply").on("click", function(){
+				$("#replyContent").val($("#message").val());
+// 				alert($("#message").val());
+				
+				$("#replyPost_no").val("${post_no }");
+				$("#replyUserid").val("${userVo.userId }");
+				
+				$("#replyTitle").val("${title }");
+				$("#replyBoard_nm").val("${board_nm }");
+				// ** 여기서 form 태그를 두개 썼는데 각각의 hidden input 태그의 id를 다르게 주어야 함!! 
+				
+				$("#replyFrm").submit();
+			});
+			
+			
+			
 		});
 	</script>
 	

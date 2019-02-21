@@ -9,9 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.javassist.SerialVersionUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import kr.or.ddit.attach_file.model.Attach_fileVo;
+import kr.or.ddit.attach_file.service.Attach_fileServiceImpl;
+import kr.or.ddit.attach_file.service.IAttach_fileService;
 import kr.or.ddit.board.model.BoardVo;
 import kr.or.ddit.board.service.BoardServiceImpl;
 import kr.or.ddit.board.service.IBoardService;
@@ -22,20 +26,26 @@ import kr.or.ddit.post.service.PostServiceImpl;
 
 @WebServlet("/board")
 public class BoardController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
 	private Logger logger = LoggerFactory.getLogger(PostController.class);
 	private IPostService postService;
 	private IBoardService boardService;
+	private IAttach_fileService attach_fileService;
 	
 	@Override
 	public void init() throws ServletException {
 		postService = new PostServiceImpl();
 		boardService = new BoardServiceImpl();
+		attach_fileService = new Attach_fileServiceImpl();
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String board_nm = request.getParameter("board_nm");
 		request.setAttribute("board_nm", board_nm);
 //		logger.debug("board_nm?? : {}", board_nm);
+		
+		logger.debug("????");
 		
 		BoardVo boardVo = boardService.selectBoard(board_nm);
 		String board_no = boardVo.getBoard_no();
@@ -56,6 +66,8 @@ public class BoardController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		logger.debug("????111");
+		System.out.println("????111");
 		
 		// insertPost
 		PostVo postVo = new PostVo();
@@ -81,9 +93,10 @@ public class BoardController extends HttpServlet {
 		postVo.setPost_no(postCnt + 1 + "");
 		postVo.setTitle(request.getParameter("title"));
 		postVo.setContent(request.getParameter("smarteditor"));
+		logger.debug("content?? : {}", request.getParameter("smarteditor"));
 		
 		// parent_post_no 값이 있으면 vo에 입력.
-		logger.debug("parent? : {}", request.getParameter("parent_post_no"));
+//		logger.debug("parent? : {}", request.getParameter("parent_post_no"));
 		if(request.getParameter("parent_post_no") != null)
 			postVo.setParent_post_no((String) request.getParameter("parent_post_no"));
 		
@@ -93,6 +106,16 @@ public class BoardController extends HttpServlet {
 		updateAllLevel();
 		updateAllGn();
 
+		// 첨부파일 세팅.
+		List<Attach_fileVo> fileList = attach_fileService.getFileList("1");
+		for(Attach_fileVo attach_fileVo : fileList){
+			attach_fileVo.setPost_no(postCnt + 1 + "");
+			attach_fileVo.setInsertflag("t");
+			logger.debug("file post_no setting?? : {}", postCnt + 1);
+			
+			attach_fileService.updateFileFlag(attach_fileVo);
+		}
+		
 		
 		doGet(request, response);
 	}
@@ -124,7 +147,13 @@ public class BoardController extends HttpServlet {
 		int updateCnt = 0;
 		
 		for(PostVo postVo : postList){
+//			logger.debug("for??");
+			logger.debug("level?? : {}", postVo.getPost_level());
+			logger.debug("post_no?? : {}", postVo.getPost_no());
+			
 			if(postVo.getPost_level().equals("1")){
+				logger.debug("level = 1 ??");
+				
 				postVo.setGn(postVo.getPost_no());
 				updateCnt += postService.updateGn(postVo);
 			}else{

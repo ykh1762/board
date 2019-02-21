@@ -42,11 +42,13 @@
 	<!-- <script type="text/javascript" src="/js/jquery.js"></script>
 	<script type="text/javascript" src="/js/jquery-ui.min.js"></script>-->
 	
+	<script type="text/javascript" src="/js/jquery/jquery-3.2.1.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	
 	<script src="/SE2/js/HuskyEZCreator.js"></script>
 	<script type="text/javascript">
-	var oEditors = []; // 개발되어 있는 소스에 맞추느라, 전역변수로 사용하였지만, 지역변수로 사용해도 전혀 무관 함.
+	var oEditors = [];
+	
+	
 	
 	$(document).ready(function() {
 		// Editor Setting
@@ -64,19 +66,24 @@
 				bUseModeChanger : true, 
 			}
 		});
-	
+		
 		// 전송버튼 클릭이벤트
 		$("#savebutton").click(function(){
 			if(confirm("게시글을 등록하시겠습니까?")) {
 				// id가 smarteditor인 textarea에 에디터에서 대입
 				oEditors.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
-	
+
 				// 이부분에 에디터 validation 검증
 				if(validation()) {
+					$("#board_nm").val("${board_nm }");
+					
+//	 				console.log($("#smarteditor").val());
+					
 					$("#frm").submit();
 				}
 			}
 		})
+		
 	});
 	
 	// 필수값 Check
@@ -87,7 +94,7 @@
 			oEditors.getById['smarteditor'].exec('FOCUS');
 			return false;
 		}
-	
+
 		return true;
 	}
 	
@@ -100,6 +107,7 @@
 	<%@include file="/header.jsp" %>
 
 	<!-- Start banner Area -->
+<form action="${pageContext.request.contextPath }/board" method="post" id="frm">
 	<section class="banner-area relative">
 		<div class="overlay overlay-bg"></div>
 		<div class="container box_1170">
@@ -107,6 +115,7 @@
 				<div class="about-content col-lg-12">
 					<h1 class="text-white">
 						${board_nm }
+						<input type="hidden" id="board_nm" name="board_nm">
 					</h1>
 
 				</div>
@@ -120,8 +129,7 @@
 	<div class="whole-wrap">
 		<div class="container box_1170">
 			<%-- 테이블. 여기에 에디터 넣기. --%>
-			
-			<form action="${pageContext.request.contextPath }/board" method="post" id="frm" style="margin-top: 10px; margin-left: 200px;">
+			<div style="margin-top: 10px; margin-left: 200px;">
 				<label style="color: black;">제목 : </label>
 				<input type="text" id="title" name="title" value="${title }" style="width: 730px;" > 
 				<textarea name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;">
@@ -132,12 +140,12 @@
 				<input type="button" class="genric-btn primary radius" 
 						style="margin-bottom: 20px; margin-left: 670px; margin-top: 10px" 
 						id="savebutton" value="수정">
-				<!-- 이어서. 수정 버튼 눌렀을 때 이벤트 -->
-			</form>
-
+				<!-- 이어서. 수정 버튼 눌렀을 때 이벤트. 여기 아직 안만들었네. -->
+			</div>
 
 		</div>
 	</div>
+</form>
 	
 	
 	

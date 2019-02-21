@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import kr.or.ddit.attach_file.model.Attach_fileVo;
 import kr.or.ddit.post.model.PostVo;
 
 public interface IPostDao {
@@ -96,6 +97,21 @@ public interface IPostDao {
 	 * Method 설명 : 특정 게시글 조회.
 	 */
 	PostVo selectPost(SqlSession sqlSession, String post_no);
+	
+	/**
+	 * 
+	 * Method : updatePost
+	 * 작성자 : PC19
+	 * 변경이력 :
+	 * @param sqlSession
+	 * @param postVo
+	 * @return
+	 * Method 설명 : 게시글 수정.
+	 */
+	int updatePost(SqlSession sqlSession, PostVo postVo);
+	
+
+	
 }
 
 

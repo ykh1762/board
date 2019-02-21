@@ -21,7 +21,7 @@
   	<select id="selectBoard" parameterType="String" resultType="boardVo">
 		SELECT *
 		  FROM BOARD
-		 WHERE BOARD_NM = #{board_nm}  	
+		 WHERE BOARD_NM = #{board_nm, jdbcType=VARCHAR}  	
   	</select>
   	
 

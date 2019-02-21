@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
 
 public class PostDaoImplTest {
 	private Logger logger = LoggerFactory.getLogger(BoardDaoImplTest.class);
-	private IPostDao postDao;
 	private SqlSession sqlSession;
+	private IPostDao postDao;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -153,6 +153,20 @@ public class PostDaoImplTest {
 
 	}
 	
+	@Test
+	public void testUpdatePost(){
+		/***Given***/
+		PostVo postVo = postDao.selectPost(sqlSession, "28");
+		postVo.setTitle("1234565");
+		postVo.setContent("123123123");
+		
+		/***When***/
+		int updateCnt = postDao.updateGn(sqlSession, postVo);
+		
+		/***Then***/
+		assertNotNull(updateCnt);
+
+	}
 	
 }
 

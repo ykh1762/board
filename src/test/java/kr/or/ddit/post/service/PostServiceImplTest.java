@@ -170,6 +170,22 @@ public class PostServiceImplTest {
 
 	}
 	
+	@Test
+	public void testUpdatePost(){
+		/***Given***/
+		PostVo postVo = postService.selectPost("28");
+		postVo.setTitle("123123");
+		postVo.setContent("123123");
+		
+		/***When***/
+		int updateCnt = postService.updatePost(postVo);
+		
+		/***Then***/
+		assertNotNull(updateCnt);
+		
+	}
+	
+	
 }
 
 

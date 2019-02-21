@@ -58,6 +58,16 @@
 							</c:forEach>
 						</ul>
 					</li>
+					<li class="menu-has-children"><a href="">페이징 게시판</a>
+						<ul>
+							<%-- 게시판 리스트 불러서 출력하기 --%>
+							<%-- 게시판을 board.jsp 하나로 통합해야되나 --%>
+							<c:forEach items="${boardList }" var="board">
+								<li><a href="${pageContext.request.contextPath }
+										/boardPaging?board_nm=${board.board_nm }">${board.board_nm }</a></li>
+							</c:forEach>
+						</ul>
+					</li>
 					<li><a href="${pageContext.request.contextPath }/boardSetting">게시판 관리</a></li>
 					<li><a href="contact.html">Contact</a></li>
 				</ul>

@@ -41,7 +41,7 @@
 				if(!!oNavigator.safari && oNavigator.version <= 5){
 					bSupportDragAndDropAPI = false;
 				}else{
-					bSupportDragAndDropAPI = true;	// chrome multi /signle
+					bSupportDragAndDropAPI = false;	// chrome multi /signle
 				}
 			} else {
 				bSupportDragAndDropAPI = false;
@@ -480,7 +480,7 @@
  		oFileUploader = new jindo.FileUploader(jindo.$("uploadInputBox"),{
 // 			sUrl  : location.href.replace(/\/[^\/]*$/, '') + '/file_uploader.php',	//샘플 URL입니다.
 // 			sCallback : location.href.replace(/\/[^\/]*$/, '') + '/callback.html',	//업로드 이후에 iframe이 redirect될 콜백페이지의 주소
- 			sUrl : 'file_uploader.jsp',								//파일업로드를 처리하는 페이지
+ 			sUrl : '/SE2/photo_uploader/file_uploader.jsp',								//파일업로드를 처리하는 페이지
  			sCallback : '/SE2/photo_uploader/callback.html',		//업로드 이후에 iframe이 redirect될 콜백페이지의 주소
  	    	sFiletype : "*.jpg;*.png;*.bmp;*.gif",						//허용할 파일의 형식. ex) "*", "*.*", "*.jpg", 구분자(;)	
  	    	sMsgNotAllowedExt : 'JPG, GIF, PNG, BMP 확장자만 가능합니다',	//허용할 파일의 형식이 아닌경우에 띄워주는 경고창의 문구

@@ -34,7 +34,7 @@ public class RepostController extends HttpServlet {
 		request.setAttribute("post_no", postVo.getPost_no());
 		
 		
-		request.getRequestDispatcher("/post/repost.jsp").forward(request, response);
+		request.getRequestDispatcher("/SE2/repost.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -41,9 +41,9 @@ public class BoardSettingController extends HttpServlet {
 		String editName = request.getParameter("editName");
 		String editFlag = request.getParameter("editFlag");
 		String editIndex = request.getParameter("editIndex");
-		logger.debug("editName : {}", editName);
-		logger.debug("editFlag : {}", editFlag);
-		logger.debug("editIndex : {}", editIndex);
+//		logger.debug("editName : {}", editName);
+		logger.debug("editFlag?? : {}", editFlag);
+//		logger.debug("editIndex : {}", editIndex);
 		// flag -> null / on
 		if(editFlag.equals("")){
 			editFlag = "f";

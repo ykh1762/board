@@ -35,6 +35,7 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		logger.debug("???");
 		request.getRequestDispatcher("/login/login.jsp").forward(request, response);
 	}
 

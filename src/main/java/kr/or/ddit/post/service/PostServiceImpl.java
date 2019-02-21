@@ -181,6 +181,28 @@ public class PostServiceImpl implements IPostService {
 		
 		return postVo;
 	}
+
+	/**
+	 * 
+	 * Method : updatePost
+	 * 작성자 : PC19
+	 * 변경이력 :
+	 * @param postVo
+	 * @return
+	 * Method 설명 : 게시글 수정.
+	 */
+	@Override
+	public int updatePost(PostVo postVo) {
+		SqlSessionFactory sqlSessionFactory = MybatisSqlSessionFactory.getSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		
+		int updateCnt = postDao.updatePost(sqlSession, postVo);
+		
+		sqlSession.commit();
+		sqlSession.close();
+		
+		return updateCnt;
+	}
 	
 }
 

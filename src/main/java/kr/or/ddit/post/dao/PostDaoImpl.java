@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import kr.or.ddit.attach_file.model.Attach_fileVo;
 import kr.or.ddit.post.model.PostVo;
 
 public class PostDaoImpl implements IPostDao {
@@ -136,5 +137,24 @@ public class PostDaoImpl implements IPostDao {
 		
 		return postVo;
 	}
+
+	/**
+	 * 
+	 * Method : updatePost
+	 * 작성자 : PC19
+	 * 변경이력 :
+	 * @param sqlSession
+	 * @param postVo
+	 * @return
+	 * Method 설명 : 게시글 수정.
+	 */
+	@Override
+	public int updatePost(SqlSession sqlSession, PostVo postVo) {
+		int updateCnt = sqlSession.update("post.updatePost", postVo);
+		
+		return updateCnt;
+	}
+
+
 
 }

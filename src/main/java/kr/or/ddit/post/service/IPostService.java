@@ -90,8 +90,16 @@ public interface IPostService {
 	 */
 	PostVo selectPost(String post_no);	
 	
-	
-	
+	/**
+	 * 
+	 * Method : updatePost
+	 * 작성자 : PC19
+	 * 변경이력 :
+	 * @param postVo
+	 * @return
+	 * Method 설명 : 게시글 수정.
+	 */
+	int updatePost(PostVo postVo);
 }
 
 

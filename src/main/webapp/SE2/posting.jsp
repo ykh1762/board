@@ -42,13 +42,18 @@
 	<!-- <script type="text/javascript" src="/js/jquery.js"></script>
 	<script type="text/javascript" src="/js/jquery-ui.min.js"></script>-->
 	
+	<script type="text/javascript" src="/js/jquery/jquery-3.2.1.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	
 	<script src="/SE2/js/HuskyEZCreator.js"></script>
 	<script type="text/javascript">
-	var oEditors = []; // 개발되어 있는 소스에 맞추느라, 전역변수로 사용하였지만, 지역변수로 사용해도 전혀 무관 함.
+	var oEditors = [];
+	
+	
 	
 	$(document).ready(function() {
+		console.log("${board_nm }");
+		
+		
 		// Editor Setting
 		nhn.husky.EZCreator.createInIFrame({
 			oAppRef : oEditors, // 전역변수 명과 동일해야 함.
@@ -64,21 +69,36 @@
 				bUseModeChanger : true, 
 			}
 		});
-	
+		
 		// 전송버튼 클릭이벤트
 		$("#savebutton").click(function(){
 			if(confirm("게시글을 등록하시겠습니까?")) {
 				// id가 smarteditor인 textarea에 에디터에서 대입
 				oEditors.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
-	
+
 				// 이부분에 에디터 validation 검증
 				if(validation()) {
 					$("#board_nm").val("${board_nm }");
+					
+//	 				console.log($("#smarteditor").val());
 					
 					$("#frm").submit();
 				}
 			}
 		})
+		
+		$("#btn_file").on("click", function(){
+			if(${fileList.size() >= 5}){
+				alert("첨부파일은 5개까지만 등록가능합니다.");
+				return;
+			}
+			
+			
+			$("#fileBoard_nm").val("${board_nm }");
+			
+			$("#fileFrm").submit();
+		});
+		
 	});
 	
 	// 필수값 Check
@@ -89,7 +109,7 @@
 			oEditors.getById['smarteditor'].exec('FOCUS');
 			return false;
 		}
-	
+
 		return true;
 	}
 	
@@ -134,10 +154,32 @@
 					<input type="button" class="genric-btn primary radius" 
 							style="margin-bottom: 20px; margin-left: 670px; margin-top: 10px" 
 							id="savebutton" value="글쓰기">
+					<!-- 첨부파일 flag 1을 등록된 글 post_no로 수정. flag는 t로 수정. -->
 				</div>
 	
 			</div>
 		</div>
+	</form>
+	
+	<form action="${pageContext.request.contextPath }/attach_fileUpload" method="post" id="fileFrm"
+		enctype="multipart/form-data" style="padding-left: 465px; padding-bottom: 30px;">
+		<input type="hidden" name="fileBoard_nm" id="fileBoard_nm"/>
+		<!-- post_no는 서블릿에서 쿼리로 구하기. -->
+		
+		<input type="file" id="fileUpload" name="fileUpload" />
+		<input type="button" id="btn_file" value="전송" /> <br>
+		
+		<label style="margin-top: 10px; color: black;">첨부파일</label> <br>
+		
+		<!-- 첨부파일 리스트 출력. -->
+		<c:if test="${fileList.size() > 0 }">
+			<c:forEach var="i" begin="0" end="${fileList.size() - 1 }">
+				<label style="color: black; margin-left: 10px;"> - ${fileList.get(i).filename }</label> <br>
+				
+			</c:forEach>
+			
+		</c:if>
+	
 	</form>
 	
 	
@@ -226,12 +268,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="js/mail-script.js"></script>
 	<script src="js/main.js"></script>
 	
-	<script type="text/javascript">
-		$(document).ready(function(){
-			
-			
-		});
-	</script>
 	
 </body>
 

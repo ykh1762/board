@@ -66,6 +66,15 @@
 		 WHERE POST_NO = #{post_no}	
 	</select>
 	
+	<!-- 게시글 수정 -->
+	<update id="updatePost" parameterType="postVo">
+		UPDATE POST
+		SET
+		TITLE = #{title},
+		CONTENT = #{content}
+		WHERE POST_NO = #{post_no}	
+	</update>
+	
   	
 </mapper>
 

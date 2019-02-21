@@ -138,10 +138,6 @@
 					<label style="color: black;">답글 제목 : </label>
 					<input type="text" id="title" name="title" style="width: 700px; margin-bottom: 10px;"> 
 					<textarea name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;">
-						${content } <br>
-						--------------------------------------------------------------------- <br>
-						<br>
-						<br>
 					</textarea> 
 					<input type="hidden" id="title" name="title"/>
 					

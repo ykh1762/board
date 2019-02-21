@@ -82,15 +82,15 @@
 										<div class="primary-switch">
 											<c:choose>
 												<c:when test="${board.use_flag == 't'  }">
-													<input type="checkbox" id="switch${board.board_no }" checked
+													<input type="checkbox" id="editFlag${board.board_no }" checked
 															name="editFlag${board.board_no }">
 												</c:when>
 												<c:otherwise>
-													<input type="checkbox" id="switch${board.board_no }"
+													<input type="checkbox" id="editFlag${board.board_no }"
 															name="editFlag${board.board_no }">
 												</c:otherwise>
 											</c:choose>
-											<label for="switch${board.board_no }"></label>
+											<label for="editFlag${board.board_no }"></label>
 										</div>								
 									</div>
 									
